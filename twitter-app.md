@@ -1,4 +1,4 @@
-# Configuração da conta do Twitter
+# 1. Configuração da conta do Twitter
 
 ## Requisitar acesso à API
 
@@ -13,7 +13,7 @@ Para requisitar acesso à API:
 2. Ao apertar neste botão, será feito o encaminhamento para outra página, onde será necessário responder perguntas sobre o caso de uso;
 2. Um representante do Twitter entrará em contato após o preenchimento dos dados, para dar encaminhamento ao processo de aprovação da conta de desenvolvedor.
 
-## Criar um aplicativo
+## 2. Criar um aplicativo
 
 Link para referência do Twitter: https://developer.twitter.com/en/docs/apps/overview
 
@@ -26,7 +26,7 @@ Para criar um aplicativo:
 1. Gerar e salvar chaves na página “Keys and Token” do seu App.
 
 
-## Setup da API de webhooks
+## 3. Setup da API de webhooks
 
 Link para referência do Twitter: https://developer.twitter.com/en/docs/twitter-api/premium/account-activity-api/overview
 
@@ -38,7 +38,7 @@ Para configurar o webhook:
 1. Crie um ambiente para a “Account Activity API” utilizando o app criado no passo anterior.
 > OBS: Para criar o ambiente será pedido um nome, este nome irá ser utilizado em requisições que serão descritas posteriormente neste guia.
 
-## Inscrição do webhook
+## 4. Inscrição do webhook
 
 Link para referência do Twitter: https://developer.twitter.com/en/docs/twitter-api/premium/account-activity-api/guides/managing-webhooks-and-subscriptions
 
