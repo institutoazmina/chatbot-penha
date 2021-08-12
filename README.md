@@ -21,5 +21,5 @@ Para a API de webhook, será necessário um endpoint HTTPS com o certificado fun
 
 # Arquitetura
 
-<img src="https://github.com/revistaazmina/chatbot-penha/raw/main/docs-res/penhas-containers.svg">
+<img src="https://raw.githubusercontent.com/revistaazmina/chatbot-penha/c0c78bf37a230be5d784b8ce917756a0b15b9861/docs-res/penhas-containers.svg">
 
