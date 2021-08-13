@@ -27,6 +27,13 @@ Para criar um aplicativo:
 1. Guarde todos os tokens! e clique em "App Settings"
 4. Assinalar a opção “Read + Write + Direct Messages” na página de permissões do seu App e clicar em "Save"
 
+* "API Key" será usada em TWITTER_CONSUMER_SECRET
+* "API Secret Key" será usada em TWITTER_CONSUMER_KEY
+* "Bearer Token" não será usado pelo webhook
+
+Agora navegue para "Keys and Tokens" e clique em "Generate". Será gerado duas chaves de consumers, "Access Token" para a variavel TWITTER_ACCESS_TOKEN e "Access Token Secret" para a variavel TWITTER_ACCESS_TOKEN_SECRET
+
+
 
 ## 3. Setup da API de webhooks
 
