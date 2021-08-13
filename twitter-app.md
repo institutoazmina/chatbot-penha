@@ -22,9 +22,10 @@ Após adquirir acesso ao painel de desenvolvedor do Twitter, é necessário cria
 
 Para criar um aplicativo:
 
-1. Acessar menu “Projects & Apps”, e criar um App na seção “Standalone Apps”;
-1. Assinalar a opção “Read, Write and Access direct messages” na página de permissões do seu App;
-1. Gerar e salvar chaves na página “Keys and Token” do seu App.
+1. Acessar menu “Projects & Apps” -> "Overview", e criar um App na seção “Standalone Apps” em clique em "+ Create App";
+1. Digite um nome para o app
+1. Guarde todos os tokens! e clique em "App Settings"
+4. Assinalar a opção “Read + Write + Direct Messages” na página de permissões do seu App e clicar em "Save"
 
 
 ## 3. Setup da API de webhooks
