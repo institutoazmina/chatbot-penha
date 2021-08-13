@@ -76,9 +76,13 @@ Isso irá subir todos os containers do projeto, com as seguintes configurações
 
 
 
-> Caso você esteja executando os comandos num VPS, você pode conectar utilizando tunnels do ssh:
-> ssh -4 -NL 127.0.0.1:8020:172.17.0.1:8020 -NL 127.0.0.1:8021:172.17.0.1:8021 user@seu-vps
+⚠️ Caso você esteja executando os comandos num VPS, você pode conectar utilizando tunnels do ssh:
+
+    ssh -4 -NL 127.0.0.1:8020:172.17.0.1:8020 -NL 127.0.0.1:8021:172.17.0.1:8021 user@seu-vps
+
 > E então utilizar o 127.0.0.1 como IP. também será necessário atualizar a url em DIRECTUS_PUBLIC_URL no arquivo .env e reiniciar o container do directus.
+
+Para o ambiente de produção você irá precisar configurar o nginx para fazer o proxy reverso com SSl.
 
 Vamos configurar um fluxo de bem vindo, que leva para o primeiro questionário:
 
@@ -179,6 +183,6 @@ Após salvar, é necessário enviar o comando para que o serviço de webhook rec
 
     curl -X POST 172.17.0.1:8021/config
 
-Se o setup da chave anterior (PENHAS_API_TOKEN) estiver correta, você deverá receber o retorno `{"message":"OK"}`, isso significa que a configuração foi recarregada com sucesso. Caso a chave esteja errada, confira a saida do log do container azmina_chatbot_webhook.
+Se o setup da chave anterior (PENHAS_API_TOKEN) estiver correta, você deverá receber o retorno `{"message":"OK"}`, isso significa que a configuração foi recarregada com sucesso. Caso a chave esteja errada ou algum problema na configuração do docker-compose, confira a saida do log do container azmina_chatbot_webhook.
 
 

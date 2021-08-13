@@ -137,7 +137,8 @@ services:
         expose:
           - "8080"
         environment:
-          REDIS_SERVER: redis
+          REDIS_SERVER: redis:6379
+          REDIS_PASSWORD: ${REDIS_PASSWORD}
           REDIS_NS: "API"
           POSTGRESQL_HOST: quiz_api_db
           POSTGRESQL_PORT: 5432
@@ -188,6 +189,7 @@ services:
         networks:
             - external_network
             - cache
+            - api_analytics
         logging:
           driver: "json-file"
           options:
