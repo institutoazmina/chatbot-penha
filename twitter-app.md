@@ -38,7 +38,10 @@ Para configurar o webhook:
 
 1. Acesse a página de ambientes de desenvolvimento (https://developer.twitter.com/en/account/environments);
 1. Crie um ambiente para a “Account Activity API” utilizando o app criado no passo anterior.
-> OBS: Para criar o ambiente será pedido um nome, este nome irá ser utilizado em requisições que serão descritas posteriormente neste guia.
+1. Será pedido um nome, este nome irá ser utilizado em requisições que serão descritas posteriormente neste guia.
+2. Selecione o App criado no passo anterior, e clique em "Complete setup" 
+
+Você irá receber uma mensagem parecida com "You are now ready to access Account Activity API with environment label 'nomequevoceescolheu'!"
 
 ## 4. Inscrição do webhook
 
