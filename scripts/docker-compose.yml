@@ -78,7 +78,7 @@ services:
 
     analytics_server:
         build: "${ANALYTICS_SRC}"
-        container_name: azmina-chatbot-analytics
+        container_name: azmina_chatbot_analytics
         restart: unless-stopped
         depends_on:
             - analytics_db
@@ -134,8 +134,8 @@ services:
         image: azminas/quiz_api
         container_name: quiz_api
         restart: unless-stopped
-        ports:
-          - "172.17.0.1:${QUIZ_API_LISTEN}:8080"
+        expose:
+          - "8080"
         environment:
           REDIS_SERVER: redis
           REDIS_NS: "API"
@@ -146,7 +146,6 @@ services:
           POSTGRESQL_PASSWORD: "${DB_PASSWORD}"
           API_PORT: 8080
           API_WORKERS: "${API_WORKERS}"
-
         depends_on:
             - redis
             - quiz_api_db
@@ -177,7 +176,7 @@ services:
             REDIS_PORT: "6379"
             REDIS_PASSWORD: ${REDIS_PASSWORD}
 
-            ANALYTICS_API_URL: http://azmina-chatbot-analytics:2049
+            ANALYTICS_API_URL: http://azmina_chatbot_analytics:2049
 
             PENHAS_API_URL: http://quiz_api:8080
             PENHAS_API_TOKEN: ${PENHAS_API_TOKEN}
