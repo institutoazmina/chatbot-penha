@@ -1,6 +1,7 @@
-# 1. Configuração da conta do Twitter
+# Configuração da conta do Twitter
 
-## Requisitar acesso à API
+
+## 1. Requisitar acesso à API
 
 Link para referência do Twitter:: https://developer.twitter.com/en/docs/developer-portal/overview
 
@@ -55,6 +56,8 @@ Agora você já tem em mãos as chaves que serão utilizadas para os seguintes p
 
 1. Cadastro de um webhook com a sua URL;
 1. Inscrição de uma página no webhook cadastrado.
+
+Você agora deve completar a [Configuração dos serviços](installing-services.md) antes de continuar com o cadastro do webhook.
 
 ### Cadastro do webhook:
 
