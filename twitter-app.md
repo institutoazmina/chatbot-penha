@@ -45,11 +45,16 @@ Você irá receber uma mensagem parecida com "You are now ready to access Accoun
 
 ## 4. Inscrição do webhook
 
+
+Você agora deve completar a [Configuração dos serviços](installing-services.md) antes de continuar com o cadastro do webhook.
+É necessário que o ambiente do webhook esteja acessivel para a internet (e o twitter!)
+
+
 Link para referência do Twitter: https://developer.twitter.com/en/docs/twitter-api/premium/account-activity-api/guides/managing-webhooks-and-subscriptions
 
 O último passo é o de “subscribe” do webhook. Caso a conta utilizada para a criação da conta de desenvolvedor seja a mesma que irá abrigar o chatbot, você pode utilizar as chaves geradas no próprio painel. Caso contrário, siga os passos abaixo:
 
-1. Instale o (Twurl)[https://github.com/twitter/twurl] (ferramenta para facilitar requisições feitas para a API do Twitter), pode ser em qualquer computador, não precisa ser no servidor da aplicação.
+1. Instale o [Twurl](https://github.com/twitter/twurl) (ferramenta para facilitar requisições feitas para a API do Twitter), pode ser em qualquer computador, não precisa ser no servidor da aplicação.
 1. Execute `twurl authorize --consumer-key ${CONSUMER_KEY_ADQUIRIDA_NO_PAINEL} --consumer-secret ${CONSUMER_SECRET_ADQUIRIDO_NO_PAINEL}`
 1. O comando acima irá retornar uma URL, que te levará ao Twitter para que seja feita a autenticação da página que irá hospedar o chatbot
 1. Após o processo de autenticação, **guarde o token e o secret gerados pelo Twurl**, pois eles serão utilizados no arquivo de variáveis de ambiente da API de webhook.
@@ -61,7 +66,6 @@ Agora você já tem em mãos as chaves que serão utilizadas para os seguintes p
 1. Cadastro de um webhook com a sua URL;
 1. Inscrição de uma página no webhook cadastrado.
 
-Você agora deve completar a [Configuração dos serviços](installing-services.md) antes de continuar com o cadastro do webhook.
 
 ### Cadastro do webhook:
 
