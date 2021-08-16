@@ -1,5 +1,8 @@
 # Configuração da conta do Twitter
 
+Será necessário um ambiente Linux (testado com Ubuntu 20.04), com os seguintes programas instalados:
+
+- gem - gerenciador de pacotes do Ruby. Necessário para instalar o twurl
 
 ## 1. Requisitar acesso à API
 
@@ -32,7 +35,6 @@ Para criar um aplicativo:
 * "Bearer Token" não será usado pelo webhook
 
 Agora navegue para "Keys and Tokens" e clique em "Generate". Será gerado duas chaves de consumers, "Access Token" para a variável de ambiente TWITTER_ACCESS_TOKEN e "Access Token Secret" para a variável TWITTER_ACCESS_TOKEN_SECRET
-
 
 
 ## 3. Configuração da API de webhooks

@@ -34,9 +34,21 @@ O script também irá pedir para informar um nome para o banco de dados. Para es
 
 Vá até a pasta escolhida, e execute o comando:
 
+    cd /home/seu-usuario/penha_chatbot
+    ls -lhas
+
+Você ver os arquivos:
+
+    src                  - código fonte das aplicações (necessário manter, mesmo após o build)
+    data                 - diretório para guardar os dados persistentes (bancos de dados e logs)
+    docker-compose.yml   - Arquivo como subir os containers
+    .env                 - variáveis de ambiente
+
+Inicialmente, para fazer a inicialização do banco sem um race-condition entre o directus e o quiz_api, execute o comando:
+
     docker-compose up quiz_api
 
-Isso deve subir 3 containers, `quiz_api_db`, `penhas_redis_1` e `quiz_api` e fazer o start-up do banco de dados. Se tudo ocorrer corretamente, você deverá ver na tela o resultado:
+Isso deve subir 3 containers, `quiz_api`, `redis` e `quiz_db` e fazer o start-up do banco de dados. Se tudo ocorrer corretamente, você deverá ver na tela o resultado:
 
     ```Redirecting STDERR/STDOUT to /data/log//quiz-api.YYYY-MM-DD.log```
 
@@ -44,11 +56,11 @@ Abra um novo terminal, e continue com os passos:
 
 Após subir estes containers, você poderá executar o seguinte comando para entrar no banco do quiz:
 
-    docker exec -it quiz_api_db psql -U pguser prefix_for_db_quiz
+    docker exec -it quiz_db psql -U pguser prefix_for_db_quiz
 
 Execute o comando a seguir para receber o valor que será necessário atualizar no arquivo .env: PENHAS_API_TOKEN
 
-    docker exec -it quiz_api_db psql -U pguser prefix_for_db_quiz -c "select value from penhas_config where name='ANON_QUIZ_SECRET'"
+    docker exec -it quiz_db psql -U pguser prefix_for_db_quiz -c "select value from penhas_config where name='ANON_QUIZ_SECRET'"
 
 Copie esta chave e atualize no arquivo .env o onde estava o valor "get-from-penhas_config-on-database"
 
@@ -62,20 +74,20 @@ Após atualizar o arquivo .env, volte para o terminal anterior e aperte Ctrl+C p
 
 Isso irá subir todos os containers do projeto, com as seguintes configurações de nome/portas:
 
-    IMAGE                           PORTS                        NAMES
-    penhas_webhook_server           172.17.0.1:8021->8080/tcp    azmina_chatbot_webhook
-    directus/directus:v9.0.0-rc.69  172.17.0.1:8020->8055/tcp    penhas_directus_1
-    azminas/quiz_api                8080/tcp                     quiz_api
-    penhas_analytics_server         2049/tcp                     azmina_chatbot_analytics
-    postgres:13.3                   5432/tcp                     twitter_chatbot_db
-    postgres:13.3                   5432/tcp                     quiz_api_db
-    bitnami/redis:6.2               6379/tcp                     penhas_redis_1
+    IMAGE                            PORTS                       NAMES
+    XXXXXXX_webhook_api              172.17.0.1:8021->8080/tcp   webhook_api
+    directus/directus:v9.0.0-rc.69   172.17.0.1:8020->8055/tcp   directus
+    XXXXXXX_analytics_api            2049/tcp                    analytics_api
+    postgres:13.3                    5432/tcp                    analytics_db
+    azminas/quiz_api                 8080/tcp                    quiz_api
+    bitnami/redis:6.2                6379/tcp                    redis
+    postgres:13.3                    5432/tcp                    quiz_db
 
 
 * Você poderá acessar o directus usando o endereço http://172.17.0.1:8020 e usar o usuário e senha `admin@example.com`
 * Você poderá acessar a API de webhook usando o endereço http://172.17.0.1:8021/
 
-
+# Configurando proxy reverso
 
 ⚠️ Caso você esteja executando os comandos num VPS, você pode conectar utilizando tunnels do ssh:
 

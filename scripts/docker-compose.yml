@@ -24,7 +24,7 @@ volumes:
 
 services:
     analytics_db:
-        container_name: twitter_chatbot_db
+        container_name: analytics_db
         image: postgres:13.3
         volumes:
           - ${ANALYTICS_POSTGRES_DIR}:/var/lib/postgresql/data
@@ -41,8 +41,8 @@ services:
             max-size: 1m
         restart: unless-stopped
 
-    quiz_api_db:
-        container_name: quiz_api_db
+    quiz_db:
+        container_name: quiz_db
         image: postgres:13.3
         volumes:
           - ${QUIZ_POSTGRES_DIR}:/var/lib/postgresql/data
@@ -61,6 +61,7 @@ services:
 
     redis:
         image: docker.io/bitnami/redis:6.2
+        container_name: redis
         environment:
           REDIS_PASSWORD: "${REDIS_PASSWORD}"
           REDIS_DISABLE_COMMANDS: "FLUSHDB,FLUSHALL"
@@ -76,9 +77,9 @@ services:
             max-file: '100'
             max-size: 1m
 
-    analytics_server:
+    analytics_api:
         build: "${ANALYTICS_SRC}"
-        container_name: azmina_chatbot_analytics
+        container_name: analytics_api
         restart: unless-stopped
         depends_on:
             - analytics_db
@@ -102,13 +103,14 @@ services:
             - api_analytics
 
     directus:
+        container_name: directus
         image: directus/directus:v9.0.0-rc.69
         restart: unless-stopped
         networks:
             - quiz_database
             - external_network
         depends_on:
-            - quiz_api_db
+            - quiz_db
             - quiz_api
         ports:
           - "172.17.0.1:${DIRECTUS_API_LISTEN}:8055"
@@ -117,7 +119,7 @@ services:
           KEY: "${DIRECTUS_KEY}"
           SECRET: "${DIRECTUS_SECRET}"
           DB_CLIENT: 'pg'
-          DB_HOST: quiz_api_db
+          DB_HOST: quiz_db
           DB_PORT: 5432
           DB_DATABASE: "${DB_NAME}_quiz"
           DB_USER: "${DB_USER}"
@@ -140,7 +142,7 @@ services:
           REDIS_SERVER: redis:6379
           REDIS_PASSWORD: ${REDIS_PASSWORD}
           REDIS_NS: "API"
-          POSTGRESQL_HOST: quiz_api_db
+          POSTGRESQL_HOST: quiz_db
           POSTGRESQL_PORT: 5432
           POSTGRESQL_DBNAME: "${DB_NAME}_quiz"
           POSTGRESQL_USER: "${DB_USER}"
@@ -149,7 +151,7 @@ services:
           API_WORKERS: "${API_WORKERS}"
         depends_on:
             - redis
-            - quiz_api_db
+            - quiz_db
         volumes:
             - ${QUIZ_DATA_DIR}:/data/
             - ${QUIZ_SRC}:/src/
@@ -159,13 +161,13 @@ services:
             - cache
 
 
-    webhook_server:
+    webhook_api:
         build: "${WEBHOOK_SRC}"
-        container_name: azmina_chatbot_webhook
+        container_name: webhook_api
         restart: unless-stopped
         depends_on:
             - quiz_api
-            - analytics_server
+            - analytics_api
         environment:
             PORT: 8080
             TWITTER_CONSUMER_SECRET: ${TWITTER_CONSUMER_SECRET}
