@@ -84,3 +84,5 @@ Não será apresentada nenhuma saida no sucesso.
 
 O seu chatbot deve estar funcionando neste momento!
 
+⚠️ A conta deve ter a opção de receber DM de desconhecidos ativada. Para isso, vá para twitter.com, clique em "More", depois "Settings and Privacy", na clique na sessão "Privacy and safety", depois "Direct Messages", e tenha certeza que a opção "Allow message requests from everyone" esteja ativada.
+
