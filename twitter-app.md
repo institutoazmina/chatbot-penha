@@ -31,13 +31,16 @@ Para criar um aplicativo:
 * "API Secret Key" será usada em TWITTER_CONSUMER_KEY
 * "Bearer Token" não será usado pelo webhook
 
-Agora navegue para "Keys and Tokens" e clique em "Generate". Será gerado duas chaves de consumers, "Access Token" para a variavel TWITTER_ACCESS_TOKEN e "Access Token Secret" para a variavel TWITTER_ACCESS_TOKEN_SECRET
+Agora navegue para "Keys and Tokens" e clique em "Generate". Será gerado duas chaves de consumers, "Access Token" para a variável de ambiente TWITTER_ACCESS_TOKEN e "Access Token Secret" para a variável TWITTER_ACCESS_TOKEN_SECRET
 
 
 
-## 3. Setup da API de webhooks
+## 3. Configuração da API de webhooks
 
-Link para referência do Twitter: https://developer.twitter.com/en/docs/twitter-api/premium/account-activity-api/overview
+Link para referência do Twitter:
+- https://developer.twitter.com/en/docs/twitter-api/premium/account-activity-api/overview
+- https://developer.twitter.com/en/docs/twitter-api/premium/account-activity-api/guides/managing-webhooks-and-subscriptions
+- https://developer.twitter.com/en/docs/twitter-api/premium/account-activity-api/api-reference/aaa-premium#post-account-activity-all-env-name-subscriptions
 
 Após a criação e configuração do aplicativo, é necessário adquirir, e configurar, o acesso à API de webhooks.
 
@@ -45,45 +48,37 @@ Para configurar o webhook:
 
 1. Acesse a página de ambientes de desenvolvimento (https://developer.twitter.com/en/account/environments);
 1. Crie um ambiente para a “Account Activity API” utilizando o app criado no passo anterior.
-1. Será pedido um nome, este nome irá ser utilizado em requisições que serão descritas posteriormente neste guia.
-2. Selecione o App criado no passo anterior, e clique em "Complete setup" 
+1. Será pedido um nome, este nome irá ser utilizado em requisições que serão descritas posteriormente neste guia. Vamos considerar que você escolheu "NOME_QUE_VOCE_ESCOLHEU"
+2. Selecione o App criado no passo anterior, e clique em "Complete setup"
 
-Você irá receber uma mensagem parecida com "You are now ready to access Account Activity API with environment label 'nomequevoceescolheu'!"
+Você irá receber uma mensagem parecida com "You are now ready to access Account Activity API with environment label 'NOME_QUE_VOCE_ESCOLHEU'!"
 
-## 4. Inscrição do webhook
+Agora, com faça a autorização do aplicativo auxiliar [Twurl](https://github.com/twitter/twurl) (ferramenta para facilitar requisições feitas para a API do Twitter), pode ser em qualquer computador, não precisa ser no servidor da aplicação.
 
+    twurl authorize --consumer-secret TWITTER_CONSUMER_SECRET --consumer-key TWITTER_CONSUMER_KEY
+
+O comando acima irá retornar uma URL, que te levará ao Twitter para que seja feita a autenticação da página que irá hospedar o chatbot. Depois de autenticar, você deve pegar o código informado na tela, e colocar no terminal, que irá fazer a autenticação e gerar o arquivo `~/.twurlrc`
+
+O arquivo `~/.twurlrc`, caso a conta seja diferente da conta do desenvolvedor, lembre-se de atualizar as variáveis de ambiente TWITTER_ACCESS_TOKEN e TWITTER_ACCESS_TOKEN_SECRET utilizando a chave `token` e `secret` respectivamente (o `consumer_key` e `consumer_secret` são os mesmos enviados pelo parâmetro, logo não precisa de atualização, pois é o mantem o mesmo valor depois da autenticação)
 
 Você agora deve completar a [Configuração dos serviços](installing-services.md) antes de continuar com o cadastro do webhook.
-É necessário que o ambiente do webhook esteja acessivel para a internet (e o twitter!)
+É necessário que o ambiente do webhook esteja acessível para a internet (e o twitter!)
 
+Agora, como dito no manual de instalação, você precisa de uma URL HTTPS externa para responder seu webhook.
 
-Link para referência do Twitter: https://developer.twitter.com/en/docs/twitter-api/premium/account-activity-api/guides/managing-webhooks-and-subscriptions
+Considerando que você subiu o ambiente usando ngrok.io, a url sera algo como `https://f2d6ce738018.ngrok.io/twitter-webhook` você precisa encodar para urlencoded (pode usar o site https://www.urlencoder.org/ para encodar a sua url para você usar no parâmetro ?url=XXXX) e executar o comando a seguir para registrar o webhook:
 
-O último passo é o de “subscribe” do webhook. Caso a conta utilizada para a criação da conta de desenvolvedor seja a mesma que irá abrigar o chatbot, você pode utilizar as chaves geradas no próprio painel. Caso contrário, siga os passos abaixo:
+    twurl -X POST /1.1/account_activity/all/NOME_QUE_VOCE_ESCOLHEU/webhooks.json?url=https%3A%2F%2Ff2d6ce738018.ngrok.io/twitter-webhook
 
-1. Instale o [Twurl](https://github.com/twitter/twurl) (ferramenta para facilitar requisições feitas para a API do Twitter), pode ser em qualquer computador, não precisa ser no servidor da aplicação.
-1. Execute `twurl authorize --consumer-key ${CONSUMER_KEY_ADQUIRIDA_NO_PAINEL} --consumer-secret ${CONSUMER_SECRET_ADQUIRIDO_NO_PAINEL}`
-1. O comando acima irá retornar uma URL, que te levará ao Twitter para que seja feita a autenticação da página que irá hospedar o chatbot
-1. Após o processo de autenticação, **guarde o token e o secret gerados pelo Twurl**, pois eles serão utilizados no arquivo de variáveis de ambiente da API de webhook.
-É possível encontrá-los utilizando o seguinte comando:
-`cat ~/.twurlrc`;
+Para listar os webhooks, você pode rodar o comando com GET:
 
-Agora você já tem em mãos as chaves que serão utilizadas para os seguintes processos:
+    twurl /1.1/account_activity/all/NOME_QUE_VOCE_ESCOLHEU/webhooks.json
 
-1. Cadastro de um webhook com a sua URL;
-1. Inscrição de uma página no webhook cadastrado.
+Depois de registrar a webhook, você precisa ativa-la para começar a receber as mensagens, para isso, rode o seguinte comando:
 
+    twurl -X POST /1.1/account_activity/all/NOME_QUE_VOCE_ESCOLHEU/subscriptions.json
 
-### Cadastro do webhook:
+Não será apresentada nenhuma saida no sucesso.
 
-1. Utilize o seguinte endpoint: POST account_activity/all/:env_name/webhooks (https://developer.twitter.com/en/docs/twitter-api/premium/account-activity-api/api-reference/aaa-premium#post-account-activity-all-env-name-webhooks), substituindo “:env_name”, pelo nome do ambiente criado no painel do twitter.
-
-### Inscrição da página no webhook:
-
-Link para referência: https://developer.twitter.com/en/docs/twitter-api/premium/account-activity-api/api-reference/aaa-premium#post-account-activity-all-env-name-subscriptions
-
-1. Utilizando as chaves da página que irá hospedar o chatbot, utilize o seguinte endpoint: `POST account_activity/all/:env_name/subscriptions`
-
-Após esta última requisição a URL cadastrada para o no passo anterior, irá passar a receber chamadas vindas do Twitter para os eventos de DM.
-
+O seu chatbot deve estar funcionando neste momento!
 

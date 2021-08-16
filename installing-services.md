@@ -11,6 +11,7 @@ Será necessário um ambiente Linux (testado com Ubuntu 20.04), com os seguintes
 - perl - trocar de textos no arquivo .env
 - sudo - trocar permissões de usuários
 - curl - para testar os serviços
+- ngrok - opcional, para exportar um endpoint https para o twitter.
 
 Execute os seguintes comandos:
 
