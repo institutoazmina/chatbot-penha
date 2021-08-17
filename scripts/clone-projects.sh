@@ -32,10 +32,17 @@ echo "preparando repositórios em $basepath..."
 cp $MY_PATH/env.base $basepath/.env
 cp $MY_PATH/docker-compose.yml $basepath/
 
+export dbpass=$(perl -MDigest::MD5 -e 'print Digest::MD5::md5_hex(rand().rand().rand().rand())')
+echo "PGPASSWORD=$dbpass psql -h \$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' quiz_db) -U pguser ${dbname}_quiz" > $basepath/db-connect--quiz_db.sh
+echo "PGPASSWORD=$dbpass psql -h \$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' analytics_db) -U pguser ${dbname}_analytics" > $basepath/db-connect--analytics_db.sh
+
+chmod +x $basepath/db-connect--quiz_db.sh
+chmod +x $basepath/db-connect--analytics_db.sh
+
 perl -pi -w -e "s|_BASEDIR_|$basepath|g;" $basepath/.env
 perl -pi -w -e "s|_DBNAME_|$dbname|g;" $basepath/.env
+perl -pi -w -e "s|_DBPASS_|$dbpass|g;" $basepath/.env
 perl -pi -w -MDigest::MD5 -e 's|random-value-here|Digest::MD5::md5_hex(rand().rand().rand().rand())|ge;' $basepath/.env
-
 
 
 cd $basepath
@@ -51,8 +58,8 @@ mkdir -p $basepath/data/webhook_log/
 mkdir -p $basepath/data/quiz_api/log/
 
 # as pastas de dados e código precisam ser escritas pelo user 1000:1000
-sudo chown 1000:1000 $basepath/data/ -R
-sudo chown 1000:1000 $basepath/src/penha_arvore_decisao -R
+chown 1000:1000 $basepath/data/ -R
+chown 1000:1000 $basepath/src/penha_arvore_decisao -R
 
 echo "fazendo build das imagens (leva um bom tempo!)..."
 cd $basepath/src/penha_arvore_decisao/api
@@ -61,5 +68,4 @@ cd $basepath/src/penha_arvore_decisao/api
 cd $basepath
 docker-compose build
 
-echo "Build completado. Configure o arquivo $basepath/.env com as chaves do twitter e outros parametros."
-
+printf "\n\nBuild completado. Configure o arquivo $basepath/.env com as chaves do twitter e outros parametros.\ncd $basepath\n"

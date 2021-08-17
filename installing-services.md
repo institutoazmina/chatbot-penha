@@ -39,10 +39,12 @@ Vá até a pasta escolhida, e execute o comando:
 
 Você ver os arquivos:
 
-    src                  - código fonte das aplicações (necessário manter, mesmo após o build)
-    data                 - diretório para guardar os dados persistentes (bancos de dados e logs)
-    docker-compose.yml   - Arquivo como subir os containers
-    .env                 - variáveis de ambiente
+    src                         - código fonte das aplicações (necessário manter, mesmo após o build)
+    data                        - diretório para guardar os dados persistentes (bancos de dados e logs)
+    docker-compose.yml          - Arquivo como subir os containers
+    .env                        - variáveis de ambiente
+    db-connect--analytics_db.sh - arquivo para conectar no banco do analytics
+    db-connect--quiz_db.sh      - arquivo para conectar no banco do quiz
 
 Inicialmente, para fazer a inicialização do banco sem um race-condition entre o directus e o quiz_api, execute o comando:
 
@@ -56,11 +58,11 @@ Abra um novo terminal, e continue com os passos:
 
 Após subir estes containers, você poderá executar o seguinte comando para entrar no banco do quiz:
 
-    docker exec -it quiz_db psql -U pguser prefix_for_db_quiz
+    ./db-connect--quiz_db.sh
 
-Execute o comando a seguir para receber o valor que será necessário atualizar no arquivo .env: PENHAS_API_TOKEN
+Execute o comando a seguinte query receber o valor que será necessário atualizar no arquivo .env: PENHAS_API_TOKEN
 
-    docker exec -it quiz_db psql -U pguser prefix_for_db_quiz -c "select value from penhas_config where name='ANON_QUIZ_SECRET'"
+    select value from penhas_config where name='ANON_QUIZ_SECRET';
 
 Copie esta chave e atualize no arquivo .env o onde estava o valor "get-from-penhas_config-on-database"
 
@@ -68,7 +70,7 @@ Aproveite para atualizar também as variáveis que recebeu do processo do twitte
 
 Você pode modificar as outras variáveis, porém, você deverá atualizar os próximos comandos para refletir a atualização.
 
-Após atualizar o arquivo .env, volte para o terminal anterior e aperte Ctrl+C para encerrar o processo do *docker-compose* com apenas a api, e rode novamente
+Após atualizar o arquivo .env, volte para o terminal anterior que está rodando o `docker-compose up quiz_api` e aperte Ctrl+C para encerrar o processo do *docker-compose* com apenas a api, e rode novamente
 
     docker-compose up
 
@@ -87,7 +89,8 @@ Isso irá subir todos os containers do projeto, com as seguintes configurações
 * Você poderá acessar o directus usando o endereço http://172.17.0.1:8020 e usar o usuário e senha `admin@example.com`
 * Você poderá acessar a API de webhook usando o endereço http://172.17.0.1:8021/
 
-# Configurando proxy reverso
+
+## Configurando o quiz
 
 ⚠️ Caso você esteja executando os comandos num VPS, você pode conectar utilizando tunnels do ssh:
 
@@ -95,11 +98,11 @@ Isso irá subir todos os containers do projeto, com as seguintes configurações
 
 > E então utilizar o 127.0.0.1 como IP. também será necessário atualizar a url em DIRECTUS_PUBLIC_URL no arquivo .env e reiniciar o container do directus.
 
-Para o ambiente de produção você irá precisar configurar o nginx para fazer o proxy reverso com SSl.
+Para o ambiente de produção você irá precisar configurar algum serviço (eg: nginx) para fazer o proxy reverso com SSL. Para ativar o webhook do twitter, vamos utilizar ngrok como exemplo na próxima sessão.
 
-Vamos configurar um fluxo de bem vindo, que leva para o primeiro questionário:
+Por enquanto, vamos configurar um fluxo de "bem vindo", que leva para o primeiro questionário utilizando diretamente o acesso ao directus.
 
-Acesse http://172.17.0.1:8020/admin/collections/twitter_bot_config e coloque no campo:
+Acesse http://172.17.0.1:8020/admin/ e faça o login, depois acesse a página http://172.17.0.1:8020/admin/collections/twitter_bot_config e coloque no campo "Configuração":
 
     {
         "nodes": [
@@ -197,5 +200,37 @@ Após salvar, é necessário enviar o comando para que o serviço de webhook rec
     curl -X POST 172.17.0.1:8021/config
 
 Se o setup da chave anterior (PENHAS_API_TOKEN) estiver correta, você deverá receber o retorno `{"message":"OK"}`, isso significa que a configuração foi recarregada com sucesso. Caso a chave esteja errada ou algum problema na configuração do docker-compose, confira a saida do log do container azmina_chatbot_webhook.
+
+
+## Configurando webhook do twitter (proxy reverso via ngrok)
+
+Para que o twitter consiga validar o webhook e enviar as dms, ele precisa de um endpoint respondendo em https.
+
+Para fins deste manual, vamos considerar que você está sem domínio e vai utilizar o ngrok para ter um endpoint web temporário.
+
+Primeiro, é necessário criar uma conta no site https://ngrok.com/ e depois instalar o programa ngrok.
+
+    $ baixar o ngrok.zip
+    $ unzip ngrok.zip
+    $ ./ngrok authtoken SUA_CHAVE_DO_NGROK_VAI_AQUI
+
+Depois, suba um tunnel com o comando:
+
+    $ ./ngrok http 172.17.0.1:8021
+
+Isso irá imprimir na tela algo como:
+
+    Session Status                online
+    Account                       suacota-aqui (Plan: Free)
+    Version                       2.3.40
+    Region                        United States (us)
+    Web Interface                 http://127.0.0.1:4040
+    Forwarding                    http://3b2b14fbb184.ngrok.io -> http://172.17.0.1:8021
+    Forwarding                    https://3b2b14fbb184.ngrok.io -> http://172.17.0.1:8021
+
+
+Você poderá usar o endereço `https://3b2b14fbb184.ngrok.io` para configurar o webhook do twitter.
+
+Caso deseje acessar o directus, rode uma nova instancia do tunnel com a porta 172.17.0.1:8020, lembrando de atualizar a variável DIRECTUS_PUBLIC_URL e reiniciar o container do directus
 
 
