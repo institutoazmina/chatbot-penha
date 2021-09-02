@@ -227,4 +227,4 @@ Geralmente, será usado nesse campo expressões, como as seguintes:
         - _self é uma variável especial, e corresponde ao código da pergunta corrente.
 
 
-Você pode conferir no arquivo quiz_config https://github.com/institutoazmina/chatbot-penha/blob/main/docs-res/quiz_config%202021-09-02%20at%2020.51.41.csv todas as 86 perguntas do nosso questionário do Penha.
+Você pode conferir no arquivo https://github.com/institutoazmina/chatbot-penha/blob/main/docs-res/quiz_config%202021-09-02%20at%2020.51.41.csv todas as 86 perguntas do nosso questionário do Penha.
