@@ -147,7 +147,7 @@ Para criar um novo questionário, acesse o http://172.17.0.1:8020/admin/collecti
 
 Marque o campo "Active" como TRUE, digite um nome para representar este questionário no campo `Name`  e pronto. Os outros campos não são usados neste projeto.
 
-Screenshot from 2021-09-02 17-08-46.png
+<img src="https://github.com/institutoazmina/chatbot-penha/blob/main/docs-res/Screenshot%20from%202021-09-02%2017-08-46.png?raw=true">
 
 ### Criando perguntas para o questionário
 
@@ -157,17 +157,17 @@ Abra o link http://172.17.0.1:8020/admin/collections/quiz_config/ e clique no "+
 
 Será necessário escolher o questionário para esta pergunta.
 
-Screenshot from 2021-09-02 17-14-44.png
+<img src="https://github.com/institutoazmina/chatbot-penha/blob/main/docs-res/Screenshot%20from%202021-09-02%2017-14-44.png">
 
 As perguntas são carregadas para ser exibidas de acordo com a ordem e relevância da pergunta.
 
 Preencha o campo de ordem, opcionalmente pode-se colocar textos introdutórios e fazer a nova pergunta (ou texto final)
 
-Screenshot from 2021-09-02 17-15-59.png
+<img src="https://github.com/institutoazmina/chatbot-penha/blob/main/docs-res/Screenshot%20from%202021-09-02%2017-15-59.png?raw=true">
 
 No campo "Type" escolha o tipo desta pergunta
 
-Screenshot from 2021-09-02 17-17-05.png
+<img src="https://github.com/institutoazmina/chatbot-penha/blob/main/docs-res/Screenshot%20from%202021-09-02%2017-17-05.png?raw=true">
 
 - Lista de opção - é a opção mais usada, que cria as opções de resposta para o usuário escolher uma
 - Texto livre - qualquer texto é aceito
@@ -179,7 +179,7 @@ Escolhendo a opção `Lista de opção` será necessário configurar o campo `Op
 
 Para adicionar uma opção, clique no botão "Nova opção" e depois digite o valor e o texto a ser exibido. O texto a ser exibido no twitter **não pode passar de 36 caracteres**.
 
-Screenshot from 2021-09-02 17-20-38.png
+<img src="https://github.com/institutoazmina/chatbot-penha/blob/main/docs-res/Screenshot%20from%202021-09-02%2017-20-38.png?raw=true">
 
 O `valor` será usado para construir a expressão e também ficará salvo na tabela de respostas.
 
@@ -227,4 +227,4 @@ Geralmente, será usado nesse campo expressões, como as seguintes:
         - _self é uma variável especial, e corresponde ao código da pergunta corrente.
 
 
-Você pode conferir no arquivo quiz_config 2021-09-02 at 20.51.41.csv todas as 88 perguntas do nosso questionário do Penha.
+Você pode conferir no arquivo quiz_config https://github.com/institutoazmina/chatbot-penha/blob/main/docs-res/quiz_config%202021-09-02%20at%2020.51.41.csv todas as 86 perguntas do nosso questionário do Penha.
