@@ -49,9 +49,9 @@ cd $basepath
 
 mkdir $basepath/src
 
-git clone https://github.com/revistaazmina/penha_webhook_twitter.git $basepath/src/penha_webhook_twitter
-git clone https://github.com/revistaazmina/penha_arvore_decisao.git $basepath/src/penha_arvore_decisao
-git clone https://github.com/revistaazmina/penha_analytics.git $basepath/src/penha_analytics
+git clone https://github.com/institutoazmina/penha_webhook_twitter.git $basepath/src/penha_webhook_twitter
+git clone https://github.com/institutoazmina/penha_arvore_decisao.git $basepath/src/penha_arvore_decisao
+git clone https://github.com/institutoazmina/penha_analytics.git $basepath/src/penha_analytics
 
 echo "criando diretorios para os dados persistentes..."
 mkdir -p $basepath/data/webhook_log/

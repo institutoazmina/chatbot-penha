@@ -89,6 +89,8 @@ Isso irá subir todos os containers do projeto, com as seguintes configurações
 * Você poderá acessar o directus usando o endereço http://172.17.0.1:8020 e usar o usuário e senha `admin@example.com`
 * Você poderá acessar a API de webhook usando o endereço http://172.17.0.1:8021/
 
+> se você tiver problemas e precisar reiniciar, rode o comando `docker rm -f webhook_api directus analytics_api analytics_db quiz_api quiz_db redis` para limpar os containers
+
 
 ## Configurando o quiz
 
@@ -200,6 +202,8 @@ Após salvar, é necessário enviar o comando para que o serviço de webhook rec
     curl -X POST 172.17.0.1:8021/config
 
 Se o setup da chave anterior (PENHAS_API_TOKEN) estiver correta, você deverá receber o retorno `{"message":"OK"}`, isso significa que a configuração foi recarregada com sucesso. Caso a chave esteja errada ou algum problema na configuração do docker-compose, confira a saida do log do container azmina_chatbot_webhook.
+
+Para mais detalhes da configuração do quiz, veja o arquivo [Configurando o Quiz](using-quiz-config.md)
 
 
 ## Configurando webhook do twitter (proxy reverso via ngrok)

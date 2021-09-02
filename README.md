@@ -18,6 +18,7 @@ Para a API de webhook, será necessário um endpoint HTTPS com o certificado fun
 
 * [Requisitar acesso à API e criar um aplicativo no Twitter](twitter-app.md)
 * [Configuração dos serviços](installing-services.md)
+* [Configurando o Quiz](using-quiz-config.md)
 
 Caso tenha alguma dúvida, fique livre para abrir uma issue no link https://github.com/revistaazmina/chatbot-penha/issues/new
 
